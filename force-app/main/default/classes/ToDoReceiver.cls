@@ -28,7 +28,7 @@ global with sharing class ToDoReceiver {
         RestRequest request = RestContext.request;
         List<Object> deserializedTodos = (List<Object>)JSON.deserializeUntyped(request.requestBody.toString());
         List<ToDo__c> todos = new List<ToDo__c>();
-        List<Id> ids = new List<Id>();
+        List<Id> externalIds = new List<Id>();
 
         for (Object todo : deserializedTodos) {
             Map<String, Object> todoAdd = (Map<String, Object>)todo;
@@ -36,11 +36,11 @@ global with sharing class ToDoReceiver {
         }
 
         for(ToDo__c todo : todos) {
-            ids.add(todo.ExternalId__c);
+            externalIds.add(todo.ExternalId__c);
             System.debug(todo);
         }
 
-        List<ToDo__c> sourceTodos = [SELECT Id, ExternalId__c FROM ToDo__c WHERE ExternalId__c IN : ids];
+        List<ToDo__c> sourceTodos = [SELECT Id, ExternalId__c FROM ToDo__c WHERE ExternalId__c IN : externalIds];
         for (ToDo__c todo : todos) {
             for (ToDo__c dataTodo : sourceTodos) {
                 if (todo.ExternalId__c == dataTodo.ExternalId__c) {
@@ -50,7 +50,7 @@ global with sharing class ToDoReceiver {
         }
 
         update todos;
-        return ids;
+        return externalIds;
     }
 
     @HttpDelete
