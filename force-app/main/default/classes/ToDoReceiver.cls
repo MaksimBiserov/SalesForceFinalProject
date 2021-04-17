@@ -10,7 +10,13 @@ global with sharing class ToDoReceiver {
 
         for(Object todo : deserializedTodos) {
             Map<String, Object> todoAdd = (Map<String, Object>)todo;
-            todos.add(doCustom(todoAdd));
+            todos.add(new ToDo__c(
+            Name = (String)todoAdd.get('name'),
+            Description__c = (String)todoAdd.get('description'),
+            Category__c = (String)todoAdd.get('category'),
+            Priority__c = (String)todoAdd.get('priority'),
+            ExternalId__c = (String)todoAdd.get('id'))
+            );
         }
 
         insert todos;
@@ -32,18 +38,38 @@ global with sharing class ToDoReceiver {
 
         for (Object todo : deserializedTodos) {
             Map<String, Object> todoAdd = (Map<String, Object>)todo;
-            todos.add(doCustom(todoAdd));
+            if((String)todoAdd.get('externalId') != null) {
+                todos.add(new ToDo__c(
+            	Name = (String)todoAdd.get('name'),
+            	Description__c = (String)todoAdd.get('description'),
+            	Category__c = (String)todoAdd.get('category'),
+            	Priority__c = (String)todoAdd.get('priority'),
+            	ExternalId__c = (String)todoAdd.get('externalId'))
+            );
+            } else {
+                todos.add(new ToDo__c(
+            	Name = (String)todoAdd.get('name'),
+            	Description__c = (String)todoAdd.get('description'),
+            	Category__c = (String)todoAdd.get('category'),
+            	Priority__c = (String)todoAdd.get('priority'),
+                ExternalId__c = (String)todoAdd.get('id'))
+            );
+            }
         }
 
         for(ToDo__c todo : todos) {
             externalIds.add(todo.ExternalId__c);
-            System.debug(todo);
+            System.debug('externalIds: ' + externalIds);
         }
 
-        List<ToDo__c> sourceTodos = [SELECT Id, ExternalId__c FROM ToDo__c WHERE ExternalId__c IN : externalIds];
+        List<ToDo__c> sourceTodos = [SELECT Id, ExternalId__c
+                                     FROM ToDo__c
+                                     WHERE Id IN : externalIds
+                                     OR ExternalId__c IN : externalIds];
+        
         for (ToDo__c todo : todos) {
             for (ToDo__c dataTodo : sourceTodos) {
-                if (todo.ExternalId__c == dataTodo.ExternalId__c) {
+                if (todo.ExternalId__c == dataTodo.ExternalId__c || todo.Id == dataTodo.ExternalId__c) {
                     todo.Id = dataTodo.Id;
                 }
             }
@@ -56,24 +82,50 @@ global with sharing class ToDoReceiver {
     @HttpDelete
     global static List<Id> deleteTodo() {
         RestRequest request = RestContext.request;
-        List<String> ids = (List<String>)JSON.deserialize(request.requestBody.toString(), List<String>.class);
-        List<ToDo__c> todos = [SELECT Id FROM ToDo__c WHERE ExternalId__c IN : ids];
-
+        List<Object> deserializedTodos = (List<Object>)JSON.deserializeUntyped(request.requestBody.toString());
+        List<ToDo__c> todos = new List<ToDo__c>();
+        List<Id> externalIds = new List<Id>();
+        
+        for (Object todo : deserializedTodos) {
+            Map<String, Object> todoAdd = (Map<String, Object>)todo;
+            if((String)todoAdd.get('externalId') != null) {
+                todos.add(new ToDo__c(
+            	Name = (String)todoAdd.get('name'),
+            	Description__c = (String)todoAdd.get('description'),
+            	Category__c = (String)todoAdd.get('category'),
+            	Priority__c = (String)todoAdd.get('priority'),
+            	ExternalId__c = (String)todoAdd.get('externalId'))
+            );
+            } else {
+                todos.add(new ToDo__c(
+            	Name = (String)todoAdd.get('name'),
+            	Description__c = (String)todoAdd.get('description'),
+            	Category__c = (String)todoAdd.get('category'),
+            	Priority__c = (String)todoAdd.get('priority'),
+                ExternalId__c = (String)todoAdd.get('id'))
+            );
+            }
+        }
+        
+        for(ToDo__c todo : todos) {
+            externalIds.add(todo.ExternalId__c);
+            System.debug('externalIds: ' + externalIds);
+        }
+        
+        List<ToDo__c> sourceTodos = [SELECT Id, ExternalId__c
+                                     FROM ToDo__c
+                                     WHERE Id IN : externalIds
+                                     OR ExternalId__c IN : externalIds];
+        
         for (ToDo__c todo : todos) {
-            System.debug(todo);
+            for (ToDo__c dataTodo : sourceTodos) {
+                if (todo.ExternalId__c == dataTodo.ExternalId__c || todo.Id == dataTodo.ExternalId__c) {
+                    todo.Id = dataTodo.Id;
+                }
+            }
         }
 
-        delete todos;
-        return ids;
-    }
-
-    private static ToDo__c doCustom(Map<String, Object> todo) {
-        return new ToDo__c(
-            Name = (String)todo.get('name'),
-            Description__c = (String)todo.get('description'),
-            Category__c = (String)todo.get('category'),
-            Priority__c = (String)todo.get('priority'),
-            ExternalId__c = (String)todo.get('id')
-        );
+        delete sourceTodos;
+        return externalIds;
     }
 }
