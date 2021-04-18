@@ -3,6 +3,8 @@ public with sharing class ResponseWrapperSub {
     public String name { get; set; }
     public Boolean status { get; set; }
     public String relatedTodo { get; set; }
+    public String relatedExternal { get; set; }
+    public String externalId { get; set; }
 
     public static ResponseWrapperSub doMapping(Sub_ToDo__c sub) {
         ResponseWrapperSub wrapper = new ResponseWrapperSub();
@@ -10,17 +12,14 @@ public with sharing class ResponseWrapperSub {
         wrapper.name = sub.Name;
         wrapper.status = sub.Status__c;
         wrapper.relatedTodo = sub.ToDo__c;
-        return wrapper;
-    }
-
-    public static List<Id> doMappingToIds(List<Sub_ToDo__c> subs){
-        List<Id> ids = new List<Id>();
-
-        for (Sub_ToDo__c sub: subs) {
-            ids.add(sub.Id);
+        for(ToDo__c todo : [SELECT Id, ExternalId__c FROM ToDo__c]) {
+            if(todo.Id == wrapper.relatedTodo) {
+                wrapper.relatedExternal = todo.ExternalId__c;
+            }
         }
-
-        return ids;
+        // wrapper.relatedExternal = sub.ToDo__r.ExternalId__c;
+        wrapper.externalId = sub.External_Id__c;
+        return wrapper;
     }
 
     public static List<ResponseWrapperSub> doMappingToWrappers(List<Sub_ToDo__c> subs){

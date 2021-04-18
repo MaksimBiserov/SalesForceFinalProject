@@ -59,7 +59,7 @@ global with sharing class ToDoReceiver {
 
         for(ToDo__c todo : todos) {
             externalIds.add(todo.ExternalId__c);
-            System.debug('externalIds: ' + externalIds);
+            System.debug(todo);
         }
 
         List<ToDo__c> sourceTodos = [SELECT Id, ExternalId__c
