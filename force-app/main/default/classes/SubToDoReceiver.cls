@@ -7,21 +7,42 @@ global with sharing class SubToDoReceiver {
         List<Object> deserializedSubs = (List<Object>) JSON.deserializeUntyped(request.requestBody.toString());
         List<Sub_ToDo__c> subs = new List<Sub_ToDo__c>();
         List<Id> ids = new List<Id>();
-        List<Id> externalIds = new List<Id>();
+        List<Id> todoIds = new List<Id>();
 
         for (Object sub : deserializedSubs) {
             Map<String, Object> subAdd = (Map<String, Object>)sub;
-            subs.add(doCustom(subAdd, externalIds));
+            if((String)subAdd.get('relatedExternal') != null) {
+                todoIds.add((String)subAdd.get('relatedExternal'));
+            	subs.add(new Sub_ToDo__c(
+            	Name = (String)subAdd.get('name'),
+                Status__c = (Boolean)subAdd.get('status'),
+            	ToDo__c = (String)subAdd.get('relatedExternal'),
+            	External_Id__c = (Id)subAdd.get('id'))
+        		);
+                System.debug('relatedTodo ' + (Id)subAdd.get('relatedTodo'));
+                System.debug('relatedExternal ' + (String)subAdd.get('relatedExternal'));
+            } else {
+                todoIds.add((Id)subAdd.get('relatedTodo'));
+            	subs.add(new Sub_ToDo__c(
+            	Name = (String)subAdd.get('name'),
+                Status__c = (Boolean)subAdd.get('status'),
+            	ToDo__c = (Id)subAdd.get('relatedTodo'),
+            	External_Id__c = (Id)subAdd.get('id'))
+        		);
+                System.debug('relatedTodo ' + (Id)subAdd.get('relatedTodo'));
+                System.debug('relatedExternal ' + (String)subAdd.get('relatedExternal'));
+            }
         }
 
-        List<ToDo__c> todos = [SELECT Id, ExternalId__c FROM ToDo__c WHERE ExternalId__c IN : externalIds];
+        List<ToDo__c> todos = [SELECT Id, ExternalId__c
+                               FROM ToDo__c
+                               WHERE ExternalId__c IN : todoIds
+                               OR Id IN : todoIds];
         System.debug(todos);
 
         for (Sub_ToDo__c sub : subs) {
             for (ToDo__c todo : todos) {
-                if (sub.ToDo__c == todo.ExternalId__c) {
-                    sub.ToDo__c = todo.Id;
-                }
+                sub.ToDo__c = todo.Id;
             }
         }
 
@@ -40,22 +61,71 @@ global with sharing class SubToDoReceiver {
         RestRequest request = RestContext.request;
         List<Object> deserializedSubs = (List<Object>) JSON.deserializeUntyped(request.requestBody.toString());
         List<Sub_ToDo__c> subs = new List<Sub_ToDo__c>();
-        List<Id> externalIds = new List<Id>();
+        List<Id> todoIds = new List<Id>();
         
         for (Object sub : deserializedSubs) {
             Map<String, Object> subAdd = (Map<String, Object>)sub;
-            subs.add(doCustom(subAdd, new List<Id>()));
+            
+            if((String)subAdd.get('relatedExternal') != null) {
+                todoIds.add((String)subAdd.get('relatedExternal'));
+                
+                if((String)subAdd.get('externalId') != null) {
+                    subs.add(new Sub_ToDo__c(
+            		Name = (String)subAdd.get('name'),
+                    Status__c = (Boolean)subAdd.get('status'),
+            		ToDo__c = (String)subAdd.get('relatedExternal'),
+            		External_Id__c = (Id)subAdd.get('externalId'))
+        			);
+                    System.debug('If relatedExternal != null && externalId != null: ' + subs);
+                } else {
+                    subs.add(new Sub_ToDo__c(
+            		Name = (String)subAdd.get('name'),
+                    Status__c = (Boolean)subAdd.get('status'),
+            		ToDo__c = (String)subAdd.get('relatedExternal'),
+            		External_Id__c = (Id)subAdd.get('id'))
+        			);
+                    System.debug('If relatedExternal != null && externalId == null: ' + subs);
+                }
+            	
+                System.debug('relatedTodo ' + (Id)subAdd.get('relatedTodo'));
+                System.debug('relatedExternal ' + (String)subAdd.get('relatedExternal'));
+            } else {
+                todoIds.add((Id)subAdd.get('relatedTodo'));
+                if((String)subAdd.get('externalId') != null) {
+                    subs.add(new Sub_ToDo__c(
+            		Name = (String)subAdd.get('name'),
+                    Status__c = (Boolean)subAdd.get('status'),
+            		ToDo__c = (Id)subAdd.get('relatedTodo'),
+            		External_Id__c = (Id)subAdd.get('externalId'))
+        			);
+                    System.debug('If relatedExternal == null && externalId != null: ' + subs);
+                } else {
+                    subs.add(new Sub_ToDo__c(
+            		Name = (String)subAdd.get('name'),
+                    Status__c = (Boolean)subAdd.get('status'),
+            		ToDo__c = (Id)subAdd.get('relatedTodo'),
+            		External_Id__c = (Id)subAdd.get('id'))
+        			);
+                    System.debug('If relatedExternal == null && externalId == null: ' + subs);
+                }
+            	
+                System.debug('relatedTodo ' + (Id)subAdd.get('relatedTodo'));
+                System.debug('relatedExternal ' + (String)subAdd.get('relatedExternal'));
+            }
         }
         
         for (Sub_ToDo__c sub : subs) {
-            externalIds.add(sub.External_Id__c);
+            todoIds.add(sub.External_Id__c);
         }
 
-        List<Sub_ToDo__c> sourceSubs = [SELECT Id, External_Id__c, ToDo__r.Id FROM Sub_ToDo__c WHERE External_Id__c IN :externalIds];
+        List<Sub_ToDo__c> sourceSubs = [SELECT Id, External_Id__c, ToDo__r.Id
+                                        FROM Sub_ToDo__c
+                                        WHERE External_Id__c IN : todoIds
+                                        OR Id IN : todoIds];
 
         for (Sub_ToDo__c sub : subs) {
             for (Sub_ToDo__c sourceSub : sourceSubs) {
-                if (sub.External_Id__c == sourceSub.External_Id__c) {
+                if (sub.External_Id__c == sourceSub.External_Id__c || sub.Id == sourceSub.External_Id__c) {
                     sub.Id = sourceSub.Id;
                     sub.ToDo__r = sourceSub.ToDo__r;
                 }
@@ -63,30 +133,85 @@ global with sharing class SubToDoReceiver {
         }
 
         update subs;
-        return externalIds;
+        return todoIds;
     }
 
     @HttpDelete
     global static List<Id> deleteSub() {
         RestRequest request = RestContext.request;
-        List<String> ids = (List<String>) JSON.deserialize(request.requestBody.toString(), List<String>.class);
-        List<Sub_ToDo__c> subs = [SELECT Id FROM Sub_ToDo__c WHERE External_Id__c IN :ids];
-
+        List<Object> deserializedSubs = (List<Object>) JSON.deserializeUntyped(request.requestBody.toString());
+        List<Sub_ToDo__c> subs = new List<Sub_ToDo__c>();
+        List<Id> todoIds = new List<Id>();
+        
+        for (Object sub : deserializedSubs) {
+            Map<String, Object> subAdd = (Map<String, Object>)sub;
+            
+            if((String)subAdd.get('relatedExternal') != null) {
+                todoIds.add((String)subAdd.get('relatedExternal'));
+                
+                if((String)subAdd.get('externalId') != null) {
+                    subs.add(new Sub_ToDo__c(
+            		Name = (String)subAdd.get('name'),
+                    Status__c = (Boolean)subAdd.get('status'),
+            		ToDo__c = (String)subAdd.get('relatedExternal'),
+            		External_Id__c = (Id)subAdd.get('externalId'))
+        			);
+                    System.debug('If relatedExternal != null && externalId != null: ' + subs);
+                } else {
+                    subs.add(new Sub_ToDo__c(
+            		Name = (String)subAdd.get('name'),
+                    Status__c = (Boolean)subAdd.get('status'),
+            		ToDo__c = (String)subAdd.get('relatedExternal'),
+            		External_Id__c = (Id)subAdd.get('id'))
+        			);
+                    System.debug('If relatedExternal != null && externalId == null: ' + subs);
+                }
+            	
+                System.debug('relatedTodo ' + (Id)subAdd.get('relatedTodo'));
+                System.debug('relatedExternal ' + (String)subAdd.get('relatedExternal'));
+            } else {
+                todoIds.add((Id)subAdd.get('relatedTodo'));
+                if((String)subAdd.get('externalId') != null) {
+                    subs.add(new Sub_ToDo__c(
+            		Name = (String)subAdd.get('name'),
+                    Status__c = (Boolean)subAdd.get('status'),
+            		ToDo__c = (Id)subAdd.get('relatedTodo'),
+            		External_Id__c = (Id)subAdd.get('externalId'))
+        			);
+                    System.debug('If relatedExternal == null && externalId != null: ' + subs);
+                } else {
+                    subs.add(new Sub_ToDo__c(
+            		Name = (String)subAdd.get('name'),
+                    Status__c = (Boolean)subAdd.get('status'),
+            		ToDo__c = (Id)subAdd.get('relatedTodo'),
+            		External_Id__c = (Id)subAdd.get('id'))
+        			);
+                    System.debug('If relatedExternal == null && externalId == null: ' + subs);
+                }
+            	
+                System.debug('relatedTodo ' + (Id)subAdd.get('relatedTodo'));
+                System.debug('relatedExternal ' + (String)subAdd.get('relatedExternal'));
+            }
+        }
+        
         for (Sub_ToDo__c sub : subs) {
-            System.debug(sub);
+            todoIds.add(sub.External_Id__c);
         }
 
+        List<Sub_ToDo__c> sourceSubs = [SELECT Id, External_Id__c, ToDo__r.Id
+                                        FROM Sub_ToDo__c
+                                        WHERE External_Id__c IN : todoIds
+                                        OR Id IN : todoIds];
+
+        for (Sub_ToDo__c sub : subs) {
+            for (Sub_ToDo__c sourceSub : sourceSubs) {
+                if (sub.External_Id__c == sourceSub.External_Id__c || sub.Id == sourceSub.External_Id__c) {
+                    sub.Id = sourceSub.Id;
+                    sub.ToDo__r = sourceSub.ToDo__r;
+                }
+            }
+        }
         delete subs;
-        return ids;
-    }
-
-    private static Sub_ToDo__c doCustom(Map<String, Object> sub, List<Id> subIds) {
-        subIds.add((Id)sub.get('relatedTodo'));
-
-        return new Sub_ToDo__c(
-            Name = (String)sub.get('name'),
-            ToDo__c = (Id)sub.get('relatedTodo'),
-            External_Id__c = (Id)sub.get('id')
-        );
+        return todoIds;
     }
 }

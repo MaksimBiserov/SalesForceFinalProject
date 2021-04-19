@@ -5,6 +5,7 @@
     <queueMembers>
         <users>
             <user>dev@dev-epam.com</user>
+            <user>standart@epam.com</user>
         </users>
     </queueMembers>
     <queueSobject>

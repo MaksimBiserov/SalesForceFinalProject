@@ -1,0 +1,15 @@
+.wrapper{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.inside-wrapper{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+c-to-do-column{
+    width:15%;
+}
