@@ -16,28 +16,31 @@
     <defaultCaseOwnerType>User</defaultCaseOwnerType>
     <defaultCaseUser>dev@dev-epam.com</defaultCaseUser>
     <emailToCase>
-        <enableE2CAttachmentAsFile>false</enableE2CAttachmentAsFile>
+        <enableE2CAttachmentAsFile>true</enableE2CAttachmentAsFile>
         <enableE2CSourceTracking>true</enableE2CSourceTracking>
         <enableEmailToCase>true</enableEmailToCase>
-        <enableHtmlEmail>false</enableHtmlEmail>
-        <enableOnDemandEmailToCase>false</enableOnDemandEmailToCase>
+        <enableHtmlEmail>true</enableHtmlEmail>
+        <enableOnDemandEmailToCase>true</enableOnDemandEmailToCase>
         <enableThreadIDInBody>true</enableThreadIDInBody>
         <enableThreadIDInSubject>true</enableThreadIDInSubject>
         <notifyOwnerOnNewCaseEmail>false</notifyOwnerOnNewCaseEmail>
+        <overEmailLimitAction>Bounce</overEmailLimitAction>
         <preQuoteSignature>true</preQuoteSignature>
         <routingAddresses>
             <addressType>EmailToCase</addressType>
             <caseOrigin>Email</caseOrigin>
-            <caseOwner>standart@epam.com</caseOwner>
+            <caseOwner>dev@dev-epam.com</caseOwner>
             <caseOwnerType>User</caseOwnerType>
-            <casePriority>High</casePriority>
+            <casePriority>Medium</casePriority>
             <createTask>true</createTask>
-            <emailAddress>dev-epam@mail.ru</emailAddress>
-            <isVerified>false</isVerified>
-            <routingName>SendToDevepam</routingName>
-            <saveEmailHeaders>true</saveEmailHeaders>
-            <taskStatus>In Progress</taskStatus>
+            <emailAddress>mksmbiserov@gmail.com</emailAddress>
+            <emailServicesAddress>mksmbiserov@m-klqrp43gi40mm1kqhe1tvoyj45ef6wblos7drx6vcdyc5dz1b.09-7vrouea4.eu40.case.salesforce.com</emailServicesAddress>
+            <isVerified>true</isVerified>
+            <routingName>EMailToCaseRoutingEpam</routingName>
+            <saveEmailHeaders>false</saveEmailHeaders>
+            <taskStatus>Not Started</taskStatus>
         </routingAddresses>
+        <unauthorizedSenderAction>Discard</unauthorizedSenderAction>
     </emailToCase>
     <enableCaseFeed>true</enableCaseFeed>
     <enableCollapseEmailThread>true</enableCollapseEmailThread>

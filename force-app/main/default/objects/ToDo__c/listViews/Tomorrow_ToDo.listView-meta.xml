@@ -5,6 +5,6 @@
     <label>Tomorrow ToDos</label>
     <queue>Tomorrow</queue>
     <sharedTo>
-        <allInternalUsers/>
+        <allInternalUsers></allInternalUsers>
     </sharedTo>
 </ListView>

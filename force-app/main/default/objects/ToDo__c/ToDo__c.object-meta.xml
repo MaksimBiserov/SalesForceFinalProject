@@ -159,7 +159,7 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>ToDos</pluralLabel>
-    <searchLayouts/>
-    <sharingModel>ReadWrite</sharingModel>
+    <searchLayouts></searchLayouts>
+    <sharingModel>Private</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

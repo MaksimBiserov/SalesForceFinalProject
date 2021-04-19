@@ -15,6 +15,7 @@ global with sharing class ToDoReceiver {
             Description__c = (String)todoAdd.get('description'),
             Category__c = (String)todoAdd.get('category'),
             Priority__c = (String)todoAdd.get('priority'),
+            Status__c = (Boolean)todoAdd.get('status'),
             ExternalId__c = (String)todoAdd.get('id'))
             );
         }
@@ -44,6 +45,7 @@ global with sharing class ToDoReceiver {
             	Description__c = (String)todoAdd.get('description'),
             	Category__c = (String)todoAdd.get('category'),
             	Priority__c = (String)todoAdd.get('priority'),
+                Status__c = (Boolean)todoAdd.get('status'),
             	ExternalId__c = (String)todoAdd.get('externalId'))
             );
             } else {
@@ -52,6 +54,7 @@ global with sharing class ToDoReceiver {
             	Description__c = (String)todoAdd.get('description'),
             	Category__c = (String)todoAdd.get('category'),
             	Priority__c = (String)todoAdd.get('priority'),
+                Status__c = (Boolean)todoAdd.get('status'),
                 ExternalId__c = (String)todoAdd.get('id'))
             );
             }
@@ -94,6 +97,7 @@ global with sharing class ToDoReceiver {
             	Description__c = (String)todoAdd.get('description'),
             	Category__c = (String)todoAdd.get('category'),
             	Priority__c = (String)todoAdd.get('priority'),
+                Status__c = (Boolean)todoAdd.get('status'),
             	ExternalId__c = (String)todoAdd.get('externalId'))
             );
             } else {
@@ -102,6 +106,7 @@ global with sharing class ToDoReceiver {
             	Description__c = (String)todoAdd.get('description'),
             	Category__c = (String)todoAdd.get('category'),
             	Priority__c = (String)todoAdd.get('priority'),
+                Status__c = (Boolean)todoAdd.get('status'),
                 ExternalId__c = (String)todoAdd.get('id'))
             );
             }

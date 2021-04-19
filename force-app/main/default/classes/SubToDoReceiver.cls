@@ -15,6 +15,7 @@ global with sharing class SubToDoReceiver {
                 todoIds.add((String)subAdd.get('relatedExternal'));
             	subs.add(new Sub_ToDo__c(
             	Name = (String)subAdd.get('name'),
+                Status__c = (Boolean)subAdd.get('status'),
             	ToDo__c = (String)subAdd.get('relatedExternal'),
             	External_Id__c = (Id)subAdd.get('id'))
         		);
@@ -24,6 +25,7 @@ global with sharing class SubToDoReceiver {
                 todoIds.add((Id)subAdd.get('relatedTodo'));
             	subs.add(new Sub_ToDo__c(
             	Name = (String)subAdd.get('name'),
+                Status__c = (Boolean)subAdd.get('status'),
             	ToDo__c = (Id)subAdd.get('relatedTodo'),
             	External_Id__c = (Id)subAdd.get('id'))
         		);
@@ -70,6 +72,7 @@ global with sharing class SubToDoReceiver {
                 if((String)subAdd.get('externalId') != null) {
                     subs.add(new Sub_ToDo__c(
             		Name = (String)subAdd.get('name'),
+                    Status__c = (Boolean)subAdd.get('status'),
             		ToDo__c = (String)subAdd.get('relatedExternal'),
             		External_Id__c = (Id)subAdd.get('externalId'))
         			);
@@ -77,6 +80,7 @@ global with sharing class SubToDoReceiver {
                 } else {
                     subs.add(new Sub_ToDo__c(
             		Name = (String)subAdd.get('name'),
+                    Status__c = (Boolean)subAdd.get('status'),
             		ToDo__c = (String)subAdd.get('relatedExternal'),
             		External_Id__c = (Id)subAdd.get('id'))
         			);
@@ -90,6 +94,7 @@ global with sharing class SubToDoReceiver {
                 if((String)subAdd.get('externalId') != null) {
                     subs.add(new Sub_ToDo__c(
             		Name = (String)subAdd.get('name'),
+                    Status__c = (Boolean)subAdd.get('status'),
             		ToDo__c = (Id)subAdd.get('relatedTodo'),
             		External_Id__c = (Id)subAdd.get('externalId'))
         			);
@@ -97,6 +102,7 @@ global with sharing class SubToDoReceiver {
                 } else {
                     subs.add(new Sub_ToDo__c(
             		Name = (String)subAdd.get('name'),
+                    Status__c = (Boolean)subAdd.get('status'),
             		ToDo__c = (Id)subAdd.get('relatedTodo'),
             		External_Id__c = (Id)subAdd.get('id'))
         			);
@@ -146,6 +152,7 @@ global with sharing class SubToDoReceiver {
                 if((String)subAdd.get('externalId') != null) {
                     subs.add(new Sub_ToDo__c(
             		Name = (String)subAdd.get('name'),
+                    Status__c = (Boolean)subAdd.get('status'),
             		ToDo__c = (String)subAdd.get('relatedExternal'),
             		External_Id__c = (Id)subAdd.get('externalId'))
         			);
@@ -153,6 +160,7 @@ global with sharing class SubToDoReceiver {
                 } else {
                     subs.add(new Sub_ToDo__c(
             		Name = (String)subAdd.get('name'),
+                    Status__c = (Boolean)subAdd.get('status'),
             		ToDo__c = (String)subAdd.get('relatedExternal'),
             		External_Id__c = (Id)subAdd.get('id'))
         			);
@@ -166,6 +174,7 @@ global with sharing class SubToDoReceiver {
                 if((String)subAdd.get('externalId') != null) {
                     subs.add(new Sub_ToDo__c(
             		Name = (String)subAdd.get('name'),
+                    Status__c = (Boolean)subAdd.get('status'),
             		ToDo__c = (Id)subAdd.get('relatedTodo'),
             		External_Id__c = (Id)subAdd.get('externalId'))
         			);
@@ -173,6 +182,7 @@ global with sharing class SubToDoReceiver {
                 } else {
                     subs.add(new Sub_ToDo__c(
             		Name = (String)subAdd.get('name'),
+                    Status__c = (Boolean)subAdd.get('status'),
             		ToDo__c = (Id)subAdd.get('relatedTodo'),
             		External_Id__c = (Id)subAdd.get('id'))
         			);
