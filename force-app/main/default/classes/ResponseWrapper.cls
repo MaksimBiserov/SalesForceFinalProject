@@ -6,6 +6,9 @@ public with sharing class ResponseWrapper {
     public String category { get; set; }
     public String priority { get; set; }
     public Boolean status { get; set; }
+    public String externalId { get; set; }
+    public String rectypeName {get; set;}
+    public String ownerName {get; set;}
 
     public static ResponseWrapper doMapping(ToDo__c todo) {
         ResponseWrapper wrapper = new ResponseWrapper();
@@ -16,17 +19,10 @@ public with sharing class ResponseWrapper {
         wrapper.category = todo.Category__c;
         wrapper.priority = todo.Priority__c;
         wrapper.status = todo.Status__c;
+        wrapper.externalId = todo.ExternalId__c;
+        wrapper.rectypeName = [SELECT Name FROM RecordType WHERE Id =: todo.RecordTypeId].Name;
+        wrapper.ownerName = todo.Owner.Name;
         return wrapper;
-    }
-
-    public static List<Id> doMappingToIds(List<ToDo__c> todos){
-        List<Id> ids = new List<Id>();
-
-        for (ToDo__c todo: todos) {
-            ids.add(todo.Id);
-        }
-
-        return ids;
     }
 
     public static List<ResponseWrapper> doMappingToWrappers(List<ToDo__c> todos){

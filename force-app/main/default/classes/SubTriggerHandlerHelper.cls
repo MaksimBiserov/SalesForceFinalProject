@@ -26,7 +26,7 @@ public with sharing class SubTriggerHandlerHelper {
     }
 
     public static void pushDeleted(List<Sub_ToDo__c> subs) {
-        List<Id> ids = ResponseWrapperSub.doMappingToIds(subs);
-        doRequest(JSON.serialize(ids), 'DELETE');
+        List<ResponseWrapperSub> wrappers = ResponseWrapperSub.doMappingToWrappers(subs);
+        doRequest(JSON.serialize(wrappers), 'DELETE');
     }
 }

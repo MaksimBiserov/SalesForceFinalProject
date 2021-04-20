@@ -32,20 +32,6 @@ private class ResponseWrapperTest {
     }
 
     @IsTest
-    public static void testDoMappingToIds() {
-        List<ToDo__c> todos = new List<ToDo__c>();
-        todos.add(todo);
-
-        Test.startTest();
-        List<Id> ids = ResponseWrapper.doMappingToIds(todos);
-        Test.stopTest();
-
-        for (Id id : ids) {
-            System.assertEquals(todo.Id, id);
-        }
-    }
-
-    @IsTest
     static void testdoMappingToWrappers() {
         ResponseWrapper wrapper = new ResponseWrapper();
         wrapper.id = todo.Id;
