@@ -1,5 +1,41 @@
 <template>
-    <template if:true={todos}>
-        <button onclick={logTodos}>log todos</button>
+    <lightning-button variant="success" label="Create new ToDo" onclick={showCreateModalWindow}></lightning-button>
+    
+    <lightning-input id="search" placeholder="Search ToDo here" onchange={search}></lightning-input>
+    
+    <template if:true={showCreateModal}>
+        <c-modal-window-create onclose={closeCreateModalWindow}>
+        </c-modal-window-create>
     </template>
+    <template if:true={showEditModal}>
+        <c-modal-window-edit 
+            record-id={recordId} 
+            onclose={closeEditModalWindow}
+            onassigntome={handleAssignToMe}
+            onassigntotoday={handleAssignToToday}
+            onassigntotomorrow={handleAssignToTomorrow}
+            onassigntolater={handleAssignToLater}
+            ondelete={handleDelete}>
+        </c-modal-window-edit>
+    </template>
+    <template if:true={showViewModal}>
+        <c-modal-window-view record-id={recordId} onclose={closeViewModalWindow}>
+        </c-modal-window-view>
+    </template>
+    <div class="wrapper">
+        <template if:true={todos}>
+            <div class="inside-wrapper">
+                <c-to-do-column name="My Todos" todos={filteredMyTodos} onedit={handleEdit} onview={handleView}>
+                </c-to-do-column>
+                <c-to-do-column name="Today Todos" todos={filteredTodayTodos} onedit={handleEdit} onview={handleView}>
+                </c-to-do-column>
+                <c-to-do-column name="Tomorrow Todos" todos={filteredTomorrowTodos} onedit={handleEdit} onview={handleView}> 
+                </c-to-do-column>
+                <c-to-do-column name="Later Todos" todos={filteredLaterTodos} onedit={handleEdit} onview={handleView}>
+                </c-to-do-column>
+                <c-to-do-column name="My Done Todos" todos={filteredDoneTodos} onedit={handleEdit} onview={handleView}>
+                </c-to-do-column>
+            </div>
+        </template>
+    </div>
 </template>

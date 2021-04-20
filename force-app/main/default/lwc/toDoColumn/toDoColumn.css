@@ -1,0 +1,23 @@
+.slds-col{
+    border-radius: 10px;
+    margin: 10px;
+}
+
+.title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 900;
+}
+
+c-to-do-item{
+    margin-top: 10px;
+    transition: transform 1s;
+}
+
+c-to-do-item:hover,
+c-to-do-item:focus{
+    background-color:rgb(226, 226, 226);
+    cursor: pointer;
+    transform: scale(2);
+}

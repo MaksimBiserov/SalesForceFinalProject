@@ -14,6 +14,7 @@ public with sharing class TodoTriggerHandlerHelper {
         request.setBody(contentBody);
         response = http.send(request);
         System.debug(response.getBody());
+        System.debug(contentBody);
     }
     
     public static void pushInserted(List<ToDo__c> todos) {
@@ -27,7 +28,7 @@ public with sharing class TodoTriggerHandlerHelper {
     }
 
     public static void pushDeleted(List<ToDo__c> todos) {
-        List<Id> ids = ResponseWrapper.doMappingToIds(todos);
-        doRequest(JSON.serialize(ids), 'DELETE');
+        List<ResponseWrapper> wrappers = ResponseWrapper.doMappingToWrappers(todos);
+        doRequest(JSON.serialize(wrappers), 'DELETE');
     }
 }
