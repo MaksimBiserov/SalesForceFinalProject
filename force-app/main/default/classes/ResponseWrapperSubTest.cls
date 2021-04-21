@@ -18,6 +18,7 @@ private class ResponseWrapperSubTest {
         Test.startTest();
         ResponseWrapperSub newWrapper = ResponseWrapperSub.doMapping(sub);
         Test.stopTest();
+        System.debug('newWrapper: ' + newWrapper);
 
         System.assertEquals(wrapper.id, newWrapper.id);
         System.assertEquals(wrapper.name, newWrapper.name);
@@ -39,6 +40,7 @@ private class ResponseWrapperSubTest {
         Test.startTest();
         List<ResponseWrapperSub> wrappers = ResponseWrapperSub.doMappingToWrappers(subs);
         Test.stopTest();
+        System.debug('wrappers: ' + wrappers);
 
         for (ResponseWrapperSub newWrapper : wrappers) {
             System.assertEquals(wrapper.id, newWrapper.id);

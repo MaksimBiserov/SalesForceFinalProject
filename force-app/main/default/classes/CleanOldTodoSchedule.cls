@@ -1,6 +1,6 @@
 global class CleanOldTodoSchedule implements Schedulable {
-    global void execute(SchedulableContext ctx) {
-        CleanOldTodo cleanTodo = new CleanOldTodo();
-        Database.executeBatch(cleanTodo);
-    }
+   global void execute(SchedulableContext sc) {
+   		CleanOldTodo cleanTodo = new CleanOldTodo();
+      	Database.executeBatch(cleanTodo);
+   }
 }

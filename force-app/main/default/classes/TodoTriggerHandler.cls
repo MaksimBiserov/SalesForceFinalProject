@@ -8,6 +8,10 @@ public with sharing class TodoTriggerHandler {
     }
 
     public static void onAfterDelete(List<ToDo__c> todos) {
-        TodoTriggerHandlerHelper.pushDeleted(todos);
+        if (System.isFuture() || System.isBatch()){
+           
+        } else {
+        	TodoTriggerHandlerHelper.pushDeleted(todos);
+        }
     }
 }

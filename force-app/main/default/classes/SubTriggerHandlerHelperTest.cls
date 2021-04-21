@@ -6,7 +6,7 @@ private class SubTriggerHandlerHelperTest {
         mock.setStaticResource('SubResource');
         mock.setStatusCode(200);
         mock.setHeader('Content-Type', 'application/json');
-        Test.setMock(HttpCalloutMock.class, mock);
+        Test.setMock(HttpCalloutMock.class, new SubHttpCalloutMock());
         List<Sub_ToDo__c> subs = new List<Sub_ToDo__c>();
         Test.startTest();
         SubTriggerHandlerHelper.pushInserted(subs);
@@ -21,7 +21,7 @@ private class SubTriggerHandlerHelperTest {
         mock.setStaticResource('SubResource');
         mock.setStatusCode(200);
         mock.setHeader('Content-Type', 'application/json');
-        Test.setMock(HttpCalloutMock.class, mock);
+        Test.setMock(HttpCalloutMock.class, new SubHttpCalloutMock());
         List<Sub_ToDo__c> subs = new List<Sub_ToDo__c>();
         Test.startTest();
         SubTriggerHandlerHelper.pushUpdated(subs);
@@ -36,7 +36,7 @@ private class SubTriggerHandlerHelperTest {
         mock.setStaticResource('SubResource');
         mock.setStatusCode(200);
         mock.setHeader('Content-Type', 'application/json');
-        Test.setMock(HttpCalloutMock.class, mock);
+        Test.setMock(HttpCalloutMock.class, new SubHttpCalloutMock());
         List<Sub_ToDo__c> subs = new List<Sub_ToDo__c>();
         Test.startTest();
         SubTriggerHandlerHelper.pushDeleted(subs);

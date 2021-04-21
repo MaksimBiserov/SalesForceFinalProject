@@ -40,11 +40,14 @@ private class ToDoReceiverTest {
         System.assert(todo != null);
         System.assertEquals(todo.Name, 'Test01');
         RestRequest request = new RestRequest();
-        request.requestBody = Blob.valueOf('[{"name": "Test001", "rectypeName" : "Today", "status":false, "id":"' + todo.ExternalId__c + '"}]');
+        request.requestBody = Blob.valueOf(
+            '[{"name": "Test001", "rectypeName" : "Today", "status":false, "id":"' + todo.ExternalId__c + '"}]'
+        );
         RestContext.request = request;
         List<Id> ids = ToDoReceiver.updateTodo();
         System.assert(ids != null);
         ToDo__c updatedTodo = [SELECT Id, Name FROM ToDo__c WHERE Id = :todo.Id];
+        System.debug('updatedTodo: ' + updatedTodo);
         System.assert(updatedTodo != null);
         System.assertEquals(updatedTodo.Name, 'Test001');
         
@@ -52,11 +55,14 @@ private class ToDoReceiverTest {
         System.assert(todo != null);
         System.assertEquals(todo.Name, 'Test02');
         request = new RestRequest();
-        request.requestBody = Blob.valueOf('[{"name": "Test002", "rectypeName" : "Tomorrow", "status":false, "id":"' + todo.Id + '"}]');
+        request.requestBody = Blob.valueOf(
+            '[{"name": "Test002", "rectypeName" : "Tomorrow", "status":false, "id":"' + todo.Id + '"}]'
+        );
         RestContext.request = request;
         ids = ToDoReceiver.updateTodo();
         System.assert(ids != null);
         updatedTodo = [SELECT Id, Name FROM ToDo__c WHERE Id = :todo.Id];
+        System.debug('updatedTodo 2: ' + updatedTodo);
         System.assert(updatedTodo != null);
         System.assertEquals(updatedTodo.Name, 'Test002');
     }

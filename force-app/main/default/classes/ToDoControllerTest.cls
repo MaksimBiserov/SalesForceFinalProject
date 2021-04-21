@@ -1,7 +1,7 @@
 @isTest
 private class ToDoControllerTest {
     @TestSetup
-    static void setUp() {
+    static void setup() {
         ToDo__c todo = new ToDo__c(
                 Name = 'Test01',
                 Description__c = 'Description',
@@ -13,7 +13,7 @@ private class ToDoControllerTest {
         mock.setStaticResource('TodoResource');
         mock.setStatusCode(200);
         mock.setHeader('Content-Type', 'application/json');
-        Test.setMock(HttpCalloutMock.class, mock);
+        Test.setMock(HttpCalloutMock.class, new TodoHttpCalloutMock());
 
         insert todo;
     }
