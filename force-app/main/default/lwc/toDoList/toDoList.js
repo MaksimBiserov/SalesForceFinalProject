@@ -10,7 +10,7 @@ export default class ToDoList extends LightningElement {
     TodayId = "00G09000000O0XZEA0";
     TomorrowId = "00G09000000O0XeEAK";
     LaterId = "00G09000000O0XjEAK";
-    recordId;
+    todo;
 
     showCreateModal = false;
     showEditModal = false;
@@ -84,7 +84,7 @@ export default class ToDoList extends LightningElement {
     }
 
     handleEdit(event){
-        this.recordId = event.detail;
+        this.todo = event.detail;
         this.showEditModal = true;
     }
 
@@ -94,7 +94,7 @@ export default class ToDoList extends LightningElement {
     }
 
     handleView(event){
-        this.recordId = event.detail;
+        this.todo = event.detail;
         this.showViewModal = true;
     }
 
@@ -162,6 +162,11 @@ export default class ToDoList extends LightningElement {
 
         this.isSearching = value ? true : false;
 
-        this.searchingTodos = this.todos.data.filter(item => item.Name.toLowerCase().includes(value));
+        this.searchingTodos = this.todos.data.filter(item => item.Name.toLowerCase().includes(value.toLowerCase()));
+    }
+
+    update(){
+        console.log('from list');
+        refreshApex(this.todos);
     }
 }

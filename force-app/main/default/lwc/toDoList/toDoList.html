@@ -9,17 +9,18 @@
     </template>
     <template if:true={showEditModal}>
         <c-modal-window-edit 
-            record-id={recordId} 
+            todo={todo} 
             onclose={closeEditModalWindow}
             onassigntome={handleAssignToMe}
             onassigntotoday={handleAssignToToday}
             onassigntotomorrow={handleAssignToTomorrow}
             onassigntolater={handleAssignToLater}
-            ondelete={handleDelete}>
+            ondelete={handleDelete}
+            onupdate={update}>
         </c-modal-window-edit>
     </template>
     <template if:true={showViewModal}>
-        <c-modal-window-view record-id={recordId} onclose={closeViewModalWindow}>
+        <c-modal-window-view todo={todo} onclose={closeViewModalWindow}>
         </c-modal-window-view>
     </template>
     <div class="wrapper">

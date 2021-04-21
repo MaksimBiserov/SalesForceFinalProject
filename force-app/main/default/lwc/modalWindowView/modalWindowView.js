@@ -7,10 +7,12 @@ import STATUS_FIELD from "@salesforce/schema/ToDo__c.Status__c";
 import PRIORITY_FIELD from "@salesforce/schema/ToDo__c.Priority__c";
 import OWNER from "@salesforce/schema/ToDo__c.OwnerId";
 
+import SUB_NAME_FIELD from "@salesforce/schema/Sub_ToDo__c.Name";
+import SUB_STATUS_FIELD from "@salesforce/schema/Sub_ToDo__c.Status__c";
 
 export default class ModalWindowView extends LightningElement {
 
-    @api recordId;
+    @api todo;
 
     fields = [
         NAME_FIELD,
@@ -19,6 +21,11 @@ export default class ModalWindowView extends LightningElement {
         PRIORITY_FIELD,
         STATUS_FIELD,
         OWNER
+    ];
+
+    fieldsSub = [
+        SUB_STATUS_FIELD,
+        SUB_NAME_FIELD
     ];
 
     closeModal(){
