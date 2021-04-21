@@ -16,6 +16,7 @@ export default class ModalWindowEdit extends LightningElement {
 
     @api todo;
 
+
     fields = [
         NAME_FIELD,
         DESCRIPTION_FIELD,
@@ -31,6 +32,7 @@ export default class ModalWindowEdit extends LightningElement {
     ];
 
     isAdding = false;
+
 
     closeModal() {
         this.dispatchEvent(new CustomEvent('close'));
