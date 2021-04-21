@@ -19,7 +19,7 @@ private class EMailToCaseTriggerHandlerHelperTest {
         List<ToDo__c> todos = new List<ToDo__c>();
 
         Test.startTest();
-        EMailToCaseTriggerHandlerHelper.createCaseTodo(cases);
+        EMailToCaseTriggerHandler.onBeforeInsert(cases);
         todos = [SELECT Id, Name, Priority__c, Description__c FROM ToDo__c];
         Test.stopTest();
 

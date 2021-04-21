@@ -1,18 +1,26 @@
 @IsTest
-private class TodoTriggerHandlerHelperTest {
+private class TodoBatchHelperTest {
+    public static ToDo__c todo = new ToDo__c(
+        Id = 'a0009000007RU4WAAW',
+        Name = 'Test01',
+        ExternalId__c = 'a010900000nVG0NAAW',
+        RecordTypeId = '012090000006M9QAAU',
+        Status__c = false
+    );
+    
     @IsTest
     static void testPushInserted() {
         StaticResourceCalloutMock mock = new StaticResourceCalloutMock();
         mock.setStaticResource('TodoResource');
         mock.setStatusCode(200);
         mock.setHeader('Content-Type', 'application/json');
-        Test.setMock(HttpCalloutMock.class, new TodoHttpCalloutMock());
+        Test.setMock(HttpCalloutMock.class, mock);
         List<ToDo__c> todos = new List<ToDo__c>();
+        todos.add(todo);
         Test.startTest();
-        TodoTriggerHandlerHelper.pushInserted(todos);
-        Integer futureCalls = Limits.getFutureCalls();
+        TodoBatchHelper.pushInserted(todos);
         Test.stopTest();
-        System.assertEquals(1, futureCalls);
+        System.assertEquals(1, todos.size());
     }
 
     @IsTest
@@ -23,11 +31,11 @@ private class TodoTriggerHandlerHelperTest {
         mock.setHeader('Content-Type', 'application/json');
         Test.setMock(HttpCalloutMock.class, new TodoHttpCalloutMock());
         List<ToDo__c> todos = new List<ToDo__c>();
+        todos.add(todo);
         Test.startTest();
-        TodoTriggerHandlerHelper.pushUpdated(todos);
-        Integer futureCalls = Limits.getFutureCalls();
+        TodoBatchHelper.pushUpdated(todos);
         Test.stopTest();
-        System.assertEquals(1, futureCalls);
+        System.assertEquals(1, todos.size());
     }
 
     @IsTest
@@ -38,10 +46,10 @@ private class TodoTriggerHandlerHelperTest {
         mock.setHeader('Content-Type', 'application/json');
         Test.setMock(HttpCalloutMock.class, new TodoHttpCalloutMock());
         List<ToDo__c> todos = new List<ToDo__c>();
+        todos.add(todo);
         Test.startTest();
-        TodoTriggerHandlerHelper.pushDeleted(todos);
-        Integer futureCalls = Limits.getFutureCalls();
+        TodoBatchHelper.pushDeleted(todos);
         Test.stopTest();
-        System.assertEquals(1, futureCalls);
+        System.assertEquals(1, todos.size());
     }
 }

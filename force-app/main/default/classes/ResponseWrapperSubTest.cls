@@ -18,25 +18,12 @@ private class ResponseWrapperSubTest {
         Test.startTest();
         ResponseWrapperSub newWrapper = ResponseWrapperSub.doMapping(sub);
         Test.stopTest();
+        System.debug('newWrapper: ' + newWrapper);
 
         System.assertEquals(wrapper.id, newWrapper.id);
         System.assertEquals(wrapper.name, newWrapper.name);
         System.assertEquals(wrapper.status, newWrapper.status);
         System.assertEquals(wrapper.relatedTodo, newWrapper.relatedTodo);
-    }
-
-    @IsTest
-    public static void testDoMappingToIds() {
-        List<Sub_ToDo__c> subs = new List<Sub_ToDo__c>();
-        subs.add(sub);
-
-        Test.startTest();
-        List<Id> ids = ResponseWrapperSub.doMappingToIds(subs);
-        Test.stopTest();
-
-        for (Id id : ids) {
-            System.assertEquals(sub.Id, id);
-        }
     }
 
     @IsTest
@@ -53,6 +40,7 @@ private class ResponseWrapperSubTest {
         Test.startTest();
         List<ResponseWrapperSub> wrappers = ResponseWrapperSub.doMappingToWrappers(subs);
         Test.stopTest();
+        System.debug('wrappers: ' + wrappers);
 
         for (ResponseWrapperSub newWrapper : wrappers) {
             System.assertEquals(wrapper.id, newWrapper.id);
