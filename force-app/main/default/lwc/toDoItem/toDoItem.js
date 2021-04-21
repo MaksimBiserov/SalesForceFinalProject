@@ -5,10 +5,10 @@ export default class ToDoItem extends LightningElement {
     @api todo;
 
     handleEdit(event){
-        this.dispatchEvent(new CustomEvent('edit', {detail: this.todo.Id}));
+        this.dispatchEvent(new CustomEvent('edit', {detail: this.todo}));
     }
 
     handleView(event){
-        this.dispatchEvent(new CustomEvent('view', {detail: this.todo.Id}));
+        this.dispatchEvent(new CustomEvent('view', {detail: this.todo}));
     }
 }
