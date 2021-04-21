@@ -10,6 +10,7 @@
     <template if:true={showEditModal}>
         <c-modal-window-edit 
             todo={todo} 
+
             onclose={closeEditModalWindow}
             onassigntome={handleAssignToMe}
             onassigntotoday={handleAssignToToday}
@@ -21,6 +22,7 @@
     </template>
     <template if:true={showViewModal}>
         <c-modal-window-view todo={todo} onclose={closeViewModalWindow}>
+
         </c-modal-window-view>
     </template>
     <div class="wrapper">

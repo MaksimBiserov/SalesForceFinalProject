@@ -14,7 +14,6 @@ public with sharing class TodoTriggerHandlerHelper {
         request.setBody(contentBody);
         response = http.send(request);
         System.debug(response.getBody());
-        System.debug(contentBody);
     }
     
     public static void pushInserted(List<ToDo__c> todos) {

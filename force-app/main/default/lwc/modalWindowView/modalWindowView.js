@@ -28,6 +28,7 @@ export default class ModalWindowView extends LightningElement {
         SUB_NAME_FIELD
     ];
 
+
     closeModal(){
         this.dispatchEvent(new CustomEvent('close'));
     }
