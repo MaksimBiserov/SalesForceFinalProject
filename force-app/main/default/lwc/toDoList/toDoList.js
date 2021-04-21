@@ -2,7 +2,7 @@ import { LightningElement, track, wire } from 'lwc';
 import getToDos from '@salesforce/apex/ToDoController.getToDos';
 import Id from '@salesforce/user/Id';
 import { refreshApex } from '@salesforce/apex';
-import {updateRecord, deleteRecord} from 'lightning/uiRecordApi';
+import {updateRecord, deleteRecord, getRecord} from 'lightning/uiRecordApi';
 
 
 export default class ToDoList extends LightningElement {
@@ -165,8 +165,16 @@ export default class ToDoList extends LightningElement {
         this.searchingTodos = this.todos.data.filter(item => item.Name.toLowerCase().includes(value.toLowerCase()));
     }
 
-    update(){
-        console.log('from list');
-        refreshApex(this.todos);
+    async update(event){
+        let fields = {
+            Id: event.detail.Id,
+        }
+        const recordInput = { fields };
+
+        await updateRecord(recordInput);
+
+        await refreshApex(this.todos);
+
+        this.todo = this.todos.data.filter(item => item.Id == event.detail.Id)[0];
     }
 }

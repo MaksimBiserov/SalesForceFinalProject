@@ -58,8 +58,8 @@ export default class ModalWindowEdit extends LightningElement {
     }
 
     deleteSubTodo(event){
+        this.dispatchEvent(new CustomEvent('update', {detail: this.todo}));
         deleteRecord(event.target.dataset.item);
-        this.dispatchEvent(new CustomEvent('update'));
     }
 
     handleAddSubTodo(){
@@ -77,6 +77,8 @@ export default class ModalWindowEdit extends LightningElement {
         let objRecordInput = {'apiName': 'Sub_ToDo__c',  fields};
 
         await createRecord(objRecordInput);
+                
+        this.dispatchEvent(new CustomEvent('update', {detail: this.todo}));
 
         this.isAdding = false;
     }

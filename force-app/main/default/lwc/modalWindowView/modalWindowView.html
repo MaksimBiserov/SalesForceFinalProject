@@ -13,15 +13,14 @@
 
         </lightning-record-form>
         <template if:true={todo.Sub_ToDos__r}>
-          <h1>SubToDos</h1>
+          
+          <div class="subtodos-header">
+            SubToDos
+          </div>
+
           <template for:each={todo.Sub_ToDos__r} for:item="SubToDo">
-            <lightning-record-form
-            key={SubToDo.Id}
-            object-api-name="Sub_ToDo__c"
-            fields={fieldsSub}
-            record-id={SubToDo.Id}
-            columns="2" 
-            mode="view">
+            <lightning-record-form key={SubToDo.Id} object-api-name="Sub_ToDo__c" fields={fieldsSub}
+              record-id={SubToDo.Id} columns="3" mode="view">
 
             </lightning-record-form>
           </template>
