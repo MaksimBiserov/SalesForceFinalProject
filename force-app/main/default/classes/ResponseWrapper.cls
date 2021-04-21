@@ -7,6 +7,7 @@ public with sharing class ResponseWrapper {
     public String priority { get; set; }
     public Boolean status { get; set; }
     public String externalId { get; set; }
+    public String rectypeName {get; set;}
 
     public static ResponseWrapper doMapping(ToDo__c todo) {
         ResponseWrapper wrapper = new ResponseWrapper();
@@ -18,6 +19,7 @@ public with sharing class ResponseWrapper {
         wrapper.priority = todo.Priority__c;
         wrapper.status = todo.Status__c;
         wrapper.externalId = todo.ExternalId__c;
+        wrapper.rectypeName = [SELECT Name FROM RecordType WHERE Id =: todo.RecordTypeId].Name;
         return wrapper;
     }
 
